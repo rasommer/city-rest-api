@@ -1,6 +1,6 @@
 package restapi.web.dto;
 
-public class CityDto {
+public class CityResponse {
 
 	private String name;
 	private String capital;

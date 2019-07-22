@@ -1,10 +1,15 @@
 package restapi.mapper;
 
+import java.util.Collection;
+import java.util.List;
+
 import restapi.persistence.entity.City;
-import restapi.web.dto.CityDto;
+import restapi.web.dto.CityResponse;
 
 public interface ICityMapper {
 
-	CityDto convertToDto(City city);
+	CityResponse convertToCityResponse(City city);
+
+	Collection<? extends CityResponse> convertToCitiesResponse(List<City> cities);
 
 }

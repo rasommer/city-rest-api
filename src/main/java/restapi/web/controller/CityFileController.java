@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import restapi.service.ICityFileService;
-import restapi.web.dto.CityDto;
+import restapi.web.dto.CityResponse;
 
 @RestController
 public class CityFileController {
@@ -20,8 +20,8 @@ public class CityFileController {
 	private ICityFileService cityFileService;
 
 	@PostMapping("/load-cities")
-	public List<CityDto> loadCityFile(@RequestParam("csv") final MultipartFile file) throws IOException {
-		final List<CityDto> cities = new ArrayList<>();
+	public List<CityResponse> loadCityFile(@RequestParam("csv") final MultipartFile file) throws IOException {
+		final List<CityResponse> cities = new ArrayList<>();
 		cities.addAll(this.cityFileService.loadCities(file));
 		return cities;
 	}

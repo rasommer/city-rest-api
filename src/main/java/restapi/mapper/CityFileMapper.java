@@ -29,6 +29,9 @@ public class CityFileMapper implements ICityFileMapper {
 
 	@Override
 	public City convertToEntity(final CSVRecord csvRecord) {
+		if (csvRecord == null) {
+			return null;
+		}
 		final City city = new City();
 		final String ibgeId = csvRecord.get(CityFileMapper.HEADERS[0]);
 		final String uf = csvRecord.get(CityFileMapper.HEADERS[1]);

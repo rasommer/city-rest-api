@@ -1,37 +1,54 @@
 package restapi.mapper;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import restapi.persistence.entity.City;
-import restapi.web.dto.CityDto;
+import restapi.web.dto.CityResponse;
 
 @Component
 public class CityMapper implements ICityMapper {
 
 	@Override
-	public CityDto convertToDto(final City city) {
-		final CityDto cityDto = new CityDto();
+	public Collection<? extends CityResponse> convertToCitiesResponse(final List<City> cities) {
+		final List<CityResponse> citiesResponse = new ArrayList<>();
+		cities.forEach(city -> {
+			final CityResponse cityResponse = this.convertToCityResponse(city);
+			citiesResponse.add(cityResponse);
+		});
+		return citiesResponse;
+	}
+
+	@Override
+	public CityResponse convertToCityResponse(final City city) {
+		if (city == null) {
+			return null;
+		}
+		final CityResponse cityResponse = new CityResponse();
 		final String alternativeNames = city.getAlternativeNames();
-		cityDto.setAlternativeNames(alternativeNames);
+		cityResponse.setAlternativeNames(alternativeNames);
 		final Boolean capital = city.getCapital();
-		cityDto.setCapital(capital.toString());
+		cityResponse.setCapital(capital.toString());
 		final Long ibgeID = city.getIbgeID();
-		cityDto.setIbgeID(ibgeID.toString());
+		cityResponse.setIbgeID(ibgeID.toString());
 		final Double latitude = city.getLatitude();
-		cityDto.setLatitude(latitude.toString());
+		cityResponse.setLatitude(latitude.toString());
 		final Double longitude = city.getLongitude();
-		cityDto.setLongitude(longitude.toString());
+		cityResponse.setLongitude(longitude.toString());
 		final String mesoregion = city.getMesoregion().getName();
-		cityDto.setMesoregion(mesoregion);
+		cityResponse.setMesoregion(mesoregion);
 		final String microregion = city.getMicroregion().getName();
-		cityDto.setMicroregion(microregion);
+		cityResponse.setMicroregion(microregion);
 		final String name = city.getName();
-		cityDto.setName(name);
+		cityResponse.setName(name);
 		final String noAccents = city.getNoAccents();
-		cityDto.setNoAccents(noAccents);
+		cityResponse.setNoAccents(noAccents);
 		final String acronym = city.getState().getAcronym();
-		cityDto.setState(acronym);
-		return cityDto;
+		cityResponse.setState(acronym);
+		return cityResponse;
 	}
 
 }

@@ -17,8 +17,8 @@ import restapi.mapper.CityFileMapper;
 import restapi.mapper.ICityFileMapper;
 import restapi.mapper.ICityMapper;
 import restapi.persistence.entity.City;
-import restapi.persistence.repository.ICityRepository;
-import restapi.web.dto.CityDto;
+import restapi.persistence.repository.ICityCrudRepository;
+import restapi.web.dto.CityResponse;
 
 @Service
 public class CityFileService implements ICityFileService {
@@ -26,13 +26,13 @@ public class CityFileService implements ICityFileService {
 	@Autowired
 	private ICityFileMapper cityFileMapper;
 	@Autowired
-	private ICityRepository cityRepository;
+	private ICityCrudRepository cityRepository;
 	@Autowired
 	private ICityMapper cityMapper;
 
 	@Override
-	public Collection<? extends CityDto> loadCities(final MultipartFile file) throws IOException {
-		final List<CityDto> citiesDto = new ArrayList<>();
+	public Collection<? extends CityResponse> loadCities(final MultipartFile file) throws IOException {
+		final List<CityResponse> citiesResponse = new ArrayList<>();
 		final InputStream inputStream = file.getInputStream();
 		final InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
 		final CSVParser csvParser = CSVFormat.EXCEL.withHeader(CityFileMapper.HEADERS).withFirstRecordAsHeader()
@@ -40,10 +40,10 @@ public class CityFileService implements ICityFileService {
 		csvParser.forEach((csvRecord) -> {
 			final City city = this.cityFileMapper.convertToEntity(csvRecord);
 			final City entity = this.cityRepository.save(city);
-			final CityDto cityDto = this.cityMapper.convertToDto(entity);
-			citiesDto.add(cityDto);
+			final CityResponse cityResponse = this.cityMapper.convertToCityResponse(entity);
+			citiesResponse.add(cityResponse);
 		});
-		return citiesDto;
+		return citiesResponse;
 	}
 
 }
